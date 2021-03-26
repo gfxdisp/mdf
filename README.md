@@ -56,9 +56,6 @@ imgr = imgr.unsqueeze(0).type(pt.FloatTensor)
 # Create a noisy image 
 imgd = pt.rand(imgr.size())
 
-# Save the original state
-imgdo = imgd.detach().clone()
-
 if cuda_available:
     imgr = imgr.cuda()
     imgd = imgd.cuda()
