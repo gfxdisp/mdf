@@ -1,5 +1,6 @@
 # TODO:
 Add requirements 
+Update citation
 
 # Multi-Scale Discriminative Feature Loss
 
