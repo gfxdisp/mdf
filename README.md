@@ -75,7 +75,7 @@ criterion = MDFLoss(path_disc, cuda_available=cuda_available)
 for ii in range(0,epochs):
     
     optimizer.zero_grad()
-    loss = criterion(imgrb,imgdb,8,1) 
+    loss = criterion(imgrb,imgdb) 
     print("Epoch: ",ii," loss: ", loss.item())
     loss.backward()
     optimizer.step()
