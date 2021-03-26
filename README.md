@@ -1,7 +1,3 @@
-# TODO:
-Add requirements 
-Update citation
-
 # Multi-Scale Discriminative Feature Loss
 
 This repository provides code for Multi-Scale Discriminative Feature (MDF) loss for image reconstruction algorithms.
