@@ -10,6 +10,82 @@ Central to the application of neural networks in image restoration problems, suc
 
 We provide a comprehensive comparison of qualitative results for different loss functions across different applications. To begin with, we show results for two Single Image Super-Resolution (SISR) networks, namely, Enhanced Deep Super-Resolution (EDSR) and Super-Resolution ResNet (SR-ResNet). Further, we show the results for the applications of image denoising and JPEG artefact removal.
 
-Webpage:
+Project Webpage:
 
 https://www.cl.cam.ac.uk/research/rainbow/projects/mdf/
+
+
+To run a simple example
+
+```python
+import torch as pt
+import torch.optim as optim
+import imageio
+import matplotlib.pyplot as plt
+import numpy as np
+from torch.autograd import Variable
+
+from mdfloss import MDFLoss
+
+
+# Set parameters
+cuda_available = False
+epochs = 25
+application = 'JPEG'
+image_path = './misc/i10.png'
+
+if application =='SISR':
+    path_disc = "./weights/Ds_SISR.pth"
+elif application == 'Denoising':
+    path_disc = "./weights/Ds_Denoising.pth"
+elif application == 'JPEG':
+    path_disc = "./weights/Ds_JPEG.pth"
+
+# Read reference images
+imgr = imageio.imread(image_path)
+imgr = pt.from_numpy(imageio.core.asarray(imgr/255.0))
+imgr = imgr.type(dtype=pt.float64)
+imgr = imgr.permute(2,0,1)
+imgr = imgr.unsqueeze(0).type(pt.FloatTensor)
+
+# Create a noisy image 
+imgd = pt.rand(imgr.size())
+
+# Save the original state
+imgdo = imgd.detach().clone()
+
+if cuda_available:
+    imgr = imgr.cuda()
+    imgd = imgd.cuda()
+
+# Convert images to variables to support gradients
+imgrb = Variable( imgr, requires_grad = False)
+imgdb = Variable( imgd, requires_grad = True)
+
+optimizer = optim.Adam([imgdb], lr=0.1)
+
+# Initialise the loss
+criterion = MDFLoss(path_disc, cuda_available=cuda_available)
+
+# Iterate over the epochs optimizing for the noisy image
+for ii in range(0,epochs):
+    
+    optimizer.zero_grad()
+    loss = criterion(imgrb,imgdb,8,1) 
+    print("Epoch: ",ii," loss: ", loss.item())
+    loss.backward()
+    optimizer.step()
+
+```
+
+If using, please cite:
+
+```
+@INPROCEEDINGS{mustafa2021,
+    title={Active Sampling for Pairwise Comparisons via Approximate Message Passing and Information Gain Maximization},
+    author={Aliaksei Mikhailiuk and Clifford Wilmot and Maria Perez-Ortiz and Dingcheng Yue and Rafal Mantiuk},
+    booktitle={2020 IEEE International Conference on Pattern Recognition (ICPR)}, 
+    year={2021},
+    month={Jan},
+}
+```
