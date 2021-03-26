@@ -87,11 +87,11 @@ If using, please cite:
 
 ```
 @INPROCEEDINGS{mustafa2021,
-    title={Active Sampling for Pairwise Comparisons via Approximate Message Passing and Information Gain Maximization},
-    author={Aliaksei Mikhailiuk and Clifford Wilmot and Maria Perez-Ortiz and Dingcheng Yue and Rafal Mantiuk},
-    booktitle={2020 IEEE International Conference on Pattern Recognition (ICPR)}, 
+    title={{Training a Better Loss Function for Image Restoration}},
+    author={Aamir Mustafa and Aliaksei Mikhailiuk and Dan Andrei Iliescu and Varun Babbar and Rafal K. Mantiuk},
+    booktitle={arxiv}, 
     year={2021},
-    month={Jan},
+    month={Mar},
 }
 ```
 ## Acknowledgement
