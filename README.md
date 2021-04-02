@@ -32,7 +32,7 @@ from mdfloss import MDFLoss
 # Set parameters
 cuda_available = False
 epochs = 25
-application = 'JPEG'
+application = 'Denoising'
 image_path = './misc/i10.png'
 
 if application =='SISR':
