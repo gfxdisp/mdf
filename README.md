@@ -82,12 +82,11 @@ for ii in range(0,epochs):
 If using, please cite:
 
 ```
-@INPROCEEDINGS{mustafa2021,
-    title={{Training a Better Loss Function for Image Restoration}},
-    author={Aamir Mustafa and Aliaksei Mikhailiuk and Dan Andrei Iliescu and Varun Babbar and Rafal K. Mantiuk},
-    booktitle={arxiv}, 
-    year={2021},
-    month={Mar},
+@article{mustafa2021training,
+  title={Training a Better Loss Function for Image Restoration},
+  author={Mustafa, Aamir and Mikhailiuk, Aliaksei and Iliescu, Dan Andrei and Babbar, Varun and Mantiuk, Rafal K},
+  journal={arXiv preprint arXiv:2103.14616},
+  year={2021}
 }
 ```
 ## Acknowledgement
