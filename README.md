@@ -82,11 +82,12 @@ for ii in range(0,epochs):
 If using, please cite:
 
 ```
-@article{mustafa2021training,
-  title={Training a Better Loss Function for Image Restoration},
-  author={Mustafa, Aamir and Mikhailiuk, Aliaksei and Iliescu, Dan Andrei and Babbar, Varun and Mantiuk, Rafal K},
-  journal={arXiv preprint arXiv:2103.14616},
-  year={2021}
+@inproceedings{mustafa2022training,
+  title={Training a Task-Specific Image Reconstruction Loss},
+  author={Mustafa, Aamir and Mikhailiuk, Aliaksei and Iliescu, Dan Andrei and Babbar, Varun and Mantiuk, Rafa{\l} K},
+  booktitle={Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision},
+  pages={2319--2328},
+  year={2022}
 }
 ```
 ## Acknowledgement
