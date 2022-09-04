@@ -12,6 +12,7 @@ import torchvision.transforms as transforms
 import torchvision.models as models
 import imageio
 # import copy
+from torchvision.utils import save_image
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -38,15 +39,17 @@ imgr = imgr.permute(2,0,1)
 imgr = imgr.unsqueeze(0).type(torch.FloatTensor)
 
 
-style_img = imgr #image_loader("./data/images/neural-style/picasso.jpg")
-content_img = imgr# image_loader("./data/images/neural-style/dancing.jpg")
-
-
 imgd= torch.load('noisy_img.pt')
 
 if torch.cuda.is_available():
   imgr = imgr.to(device)
   imgd = imgd.to(device)
+
+style_img = imgr #image_loader("./data/images/neural-style/picasso.jpg")
+content_img = imgr# image_loader("./data/images/neural-style/dancing.jpg")
+
+
+
 
 # assert style_img.size() == content_img.size(), \
 #     "we need to import style and content images of the same size"
@@ -152,7 +155,7 @@ def get_style_model_and_losses(cnn, normalization_mean, normalization_std,
 
   # assuming that cnn is a nn.Sequential, so we make a new nn.Sequential
   # to put in modules that are supposed to be activated sequentially
-  model = nn.Sequential(normalization)
+  model = nn.Sequential(normalization).to(device)
 
   i = 0  # increment every time we see a conv
   for layer in cnn.children():
@@ -214,10 +217,12 @@ def get_input_optimizer(input_img):
 
 PSNRs=[]
 
+L1_loss = nn.L1Loss()
 
-def run_style_transfer(cnn, normalization_mean, normalization_std,
-                       content_img, style_img, input_img, num_steps=500,
-                       style_weight=1000000, content_weight=1):
+
+def run_style_transfer(cnn, normalization_mean, normalization_std, 
+                       content_img, style_img, input_img, num_steps=5000,
+                       style_weight=1, content_weight=1):
   """Run the style transfer."""
   print('Building the style transfer model..')
   model, style_losses, content_losses = get_style_model_and_losses(cnn, normalization_mean, normalization_std, style_img, content_img)
@@ -251,7 +256,7 @@ def run_style_transfer(cnn, normalization_mean, normalization_std,
       style_score *= style_weight
       content_score *= content_weight
 
-      loss = style_score + content_score
+      loss = style_score + content_score + L1_loss(input_img, content_img)
       loss.backward()
 
       run[0] += 1
@@ -262,7 +267,7 @@ def run_style_transfer(cnn, normalization_mean, normalization_std,
         print()
 
       eval_psnr = psnr(torch.clamp(imgr, 0., 1.), torch.clamp(input_img, 0., 1.)).item()
-#    print('PSNR is Averaged', eval_psnr)
+      print('PSNR is Averaged', eval_psnr)
       PSNRs.append(eval_psnr)
 
       return style_score + content_score
@@ -275,7 +280,7 @@ def run_style_transfer(cnn, normalization_mean, normalization_std,
   with torch.no_grad():
     input_img.clamp_(0, 1)
 
-  plt.imsave('Output_Images/VGG_Style_Loss.png', input_img)    
+  save_image( input_img , 'Output_Images/VGG_Style_Loss.png')    
   return input_img
 
 
